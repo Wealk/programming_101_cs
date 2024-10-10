@@ -17,7 +17,7 @@ namespace Programming101CS {
                     PrintTools.WriteLine($"{input}- {GetSectionTitle(input)}", ConsoleColor.Yellow);
                     GetSectionSyllabus(input);
                     Console.Write("\n\n");
-                    PrintTools.WriteLine( input != 8 ? "EJERCICIOS" : "PASOS RECOMENDADOS", ConsoleColor.Cyan);
+                    PrintTools.WriteLine(input != 8 ? "EJERCICIOS" : "PASOS RECOMENDADOS", ConsoleColor.Cyan);
                     GetSectionExercicies(input);
 
                     if (ReadSolutionInput()) {
@@ -67,22 +67,15 @@ namespace Programming101CS {
         }
 
         private static int ReadUserInput() {
-            var option = 0;
-
             Console.Write("Opción: ");
             var keyPressed = Console.ReadKey();
 
-            while (keyPressed.Key != ConsoleKey.Escape && (keyPressed.KeyChar < '0' || keyPressed.KeyChar > '8')) {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write(" \tNop, Intenta de nuevo :)\n");
-                Console.ForegroundColor = ConsoleColor.White;
-
+            var option = 0;
+            while (keyPressed.Key != ConsoleKey.Escape && (!int.TryParse($"{keyPressed.KeyChar}", out option) || option < 0 || option > 8)) {
+                PrintTools.WriteLine(" \tNop, Intenta de nuevo :)", ConsoleColor.Red);
                 Console.Write("Opción: ");
                 keyPressed = Console.ReadKey();
             }
-
-            if (keyPressed.Key >= ConsoleKey.D0 && keyPressed.Key <= ConsoleKey.D8)
-                option = keyPressed.KeyChar - '0';
 
             return option;
         }
@@ -188,7 +181,7 @@ namespace Programming101CS {
                     Syllabus.Exercices.Solutions.AdvancedSets.Solution();
                     break;
                 case 8:
-                    Practice.Statement.RecommendedSteps();
+                    Practice.Solution.DungeonSearcher.StartAdventure();
                     break;
             }
         }

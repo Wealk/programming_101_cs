@@ -28,7 +28,7 @@ Los turnos los gestionará el propio usuario mediante sus acciones, cada acción
 Utiliza WASD para mover al jugador a arriba, izquierda, abajo y derecha respectivamente, si pulsa ESC en cualquier 
 momento el juego deberá finalizar. Si el jugador y el monstruo comparten celda el juego terminará perdiendo el jugador, 
 si el jugador llega a la casilla del tesoro el jugador ganará. En ambos casos se volverá a la fase inicial del 
-programa pidiendo de nuevo el tamañó de la mazmorra
+programa pidiendo de nuevo el tamaño de la mazmorra
             ");
 
             Console.WriteLine(@"
@@ -45,7 +45,7 @@ de programación. Cada turno se deberá mostrar la situación de las celdas espe
             Console.WriteLine("2- Intenta modularizar la practica en entidades y sus funcionalidades específicas.");
             Console.WriteLine("3- Para el pintado de la información intenta utilizar el override de ToString().");
             Console.WriteLine("4- Ayúdate de una función auxiliar para obtener las casillas colindantes a una entidad y obtener los movimientos disponibles.");
-            Console.WriteLine("5- Usa las funciones auxiliares para pintar información en la consola o limpiar la consola.");
+            Console.WriteLine("5- Usa las funciones auxiliares proporcionadas en Helpers.PrintTools para pintar información en la consola o limpiar la consola.");
         }
     }
 }

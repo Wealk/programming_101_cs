@@ -1,14 +1,5 @@
 ﻿namespace Programming101CS.Helpers {
     internal static class PrintTools {
-        public static void WriteHeader(string text) {
-
-        }
-
-        public static void WriteSection(string text) {
-
-        }
-
-
         public static void WriteLine(string text, ConsoleColor color) {
             Console.ForegroundColor = color;
             Console.WriteLine(text);
