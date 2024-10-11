@@ -1,10 +1,10 @@
 ﻿using Programming101CS.Helpers;
 using Programming101CS.Practice.Solution.Classes;
 using Programming101CS.Practice.Solution.Classes.Dungeon;
+using Programming101CS.Practice.Solution.Classes.Entities;
 
 namespace Programming101CS.Practice.Solution {
     internal class DungeonSearcher {
-        public static Dungeon Dungeon { get; set; }
         private const int FLOORS = 2;
 
         public static void StartAdventure() {
@@ -19,15 +19,30 @@ namespace Programming101CS.Practice.Solution {
             var dungeonSize = GetDungeonSize();
             if (dungeonSize > 0) {
                 Console.WriteLine("Instanciando mazmorra...");
+                var dungeon = new Dungeon(FLOORS, dungeonSize);
+
                 Console.WriteLine("Eligiendo localizaciones...");
+                dungeon.AddStairs();
+                dungeon.AddTreasure();
+
                 Console.WriteLine("Posicionando enemigos...");
+                var enemies = new List<Enemy>();
+                for (var i = 1; i <= FLOORS; i++) {
+                    for (var e = i; e > 0; e--) {
+                        var position = dungeon.GetAvailableRandomPosition(i - 1, enemies);
+                        enemies.Add(new Enemy(position));
+                    }
+                }
+
                 Console.WriteLine("Entrando jugador...");
+                var wallPosition = dungeon.GetAvailableRandomWallPosition(0, enemies);
+                var adventurer = new Adventurer(wallPosition);
 
                 PrintTools.WriteLine("¡Todo listo! Que empiece el juego", ConsoleColor.Yellow);
                 Console.Write("PULSA CUALQUIER TECLA CUANDO ESTÉS LISTO PARA EMPEZAR ");
                 _ = Console.ReadKey();
 
-                GameLoop();
+                GameLoop(dungeon, adventurer, [.. enemies]);
             }
 
             PrintTools.WriteLine("FIN DEL JUEGO", ConsoleColor.Magenta);
@@ -47,29 +62,94 @@ namespace Programming101CS.Practice.Solution {
             return input;
         }
 
-        private static int GetUserInput(DirectionType[] availableDirections) {
+        private static DirectionType? GetUserInput(DirectionType[] availableDirections) {
             var available = string.Join(", ", availableDirections);
-            var input = 0;
-            while (input == 0) {
+
+            DirectionType? direction = null;
+            var hasValidInput = false;
+            while (!hasValidInput) {
                 Console.Write($"¿A qué dirección quieres ir? ({available}): ");
                 var key = Console.ReadKey();
-                if (key.Key == ConsoleKey.Escape) input = -1;
-                else if (int.TryParse($"{key.KeyChar}", out var inputInt) && Enum.IsDefined(typeof(DirectionType), inputInt)) input = inputInt;
-                else PrintTools.WriteLine("Nop, Intenta de nuevo :)", ConsoleColor.Red);
+                if (key.Key == ConsoleKey.Escape) {
+                    hasValidInput = true;
+                    direction = null;
+                } else {
+                    switch (key.KeyChar) {
+                        case 'W':
+                        case 'w':
+                            hasValidInput = true;
+                            direction = DirectionType.North;
+                            break;
+                        case 'D':
+                        case 'd':
+                            hasValidInput = true;
+                            direction = DirectionType.East;
+                            break;
+                        case 'S':
+                        case 's':
+                            hasValidInput = true;
+                            direction = DirectionType.South;
+                            break;
+                        case 'A':
+                        case 'a':
+                            hasValidInput = true;
+                            direction = DirectionType.West;
+                            break;
+                    }
+
+                    if (!availableDirections.Any(ad => ad == direction)) {
+                        hasValidInput = false;
+                        direction = null;
+
+                        PrintTools.WriteLine("\tNop, Intenta de nuevo :)", ConsoleColor.Red);
+                    }
+                }
             }
 
-            return input;
+            return direction;
         }
 
-        private static void GameLoop() {
+        private static void GameLoop(Dungeon dungeon, Adventurer player, Enemy[] enemies) {
             var isPlaying = true;
             while (isPlaying) {
                 PrintTools.ClearConsole();
-                // Print dungeon state
-                // Get available movements for the player
-                // Process user input
-                // Update enemy positions
-                // Check win/lose condition
+                dungeon.PrintDungeon(player, enemies);
+
+                var availableDirections = dungeon.GetAvailableDirections(player);
+                var userDirection = GetUserInput(availableDirections);
+                if (!userDirection.HasValue) {
+                    Console.WriteLine("Saliendo de la mazmorra...");
+                    isPlaying = false;
+                } else {
+                    player.Move(userDirection.Value);
+                    if (dungeon.StairsPosition.Any(s => s == player.Position)) player.ChangeFloor();
+
+                    if (enemies.Any(e => e.Position == player.Position)) {
+                        isPlaying = false;
+                        PrintTools.ClearConsole();
+                        dungeon.PrintDungeon(player, enemies);
+                        PrintTools.WriteLine("El jugador ha sido eliminado...", ConsoleColor.Red);
+                    }
+
+                    foreach (var enemy in enemies) {
+                        availableDirections = dungeon.GetAvailableDirections(enemy, enemies);
+                        enemy.Move(availableDirections);
+                        if (enemy.Position == player.Position) {
+                            isPlaying = false;
+                            PrintTools.ClearConsole();
+                            dungeon.PrintDungeon(player, enemies);
+                            PrintTools.WriteLine("El jugador ha sido eliminado...", ConsoleColor.Red);
+                            break;
+                        }
+                    }
+
+                    if (isPlaying && player.Position == dungeon.TreasurePosition) {
+                        isPlaying = false;
+                        PrintTools.ClearConsole();
+                        dungeon.PrintDungeon(player, enemies);
+                        PrintTools.WriteLine("¡El jugador ha encontrado el tesoro!", ConsoleColor.Yellow);
+                    }
+                }
             }
         }
     }
