@@ -38,14 +38,14 @@ namespace Programming101CS.Practice.Solution {
                 var wallPosition = dungeon.GetAvailableRandomWallPosition(0, enemies);
                 var adventurer = new Adventurer(wallPosition);
 
-                PrintTools.WriteLine("¡Todo listo! Que empiece el juego", ConsoleColor.Yellow);
-                Console.Write("PULSA CUALQUIER TECLA CUANDO ESTÉS LISTO PARA EMPEZAR ");
+                PrintTools.WriteLine("\n¡Todo listo! Que empiece el juego", ConsoleColor.Yellow);
+                Console.Write("\nPULSA CUALQUIER TECLA CUANDO ESTÉS LISTO PARA EMPEZAR ");
                 _ = Console.ReadKey();
 
                 GameLoop(dungeon, adventurer, [.. enemies]);
             }
 
-            PrintTools.WriteLine("FIN DEL JUEGO", ConsoleColor.Magenta);
+            PrintTools.WriteLine("\nFIN DEL JUEGO\n", ConsoleColor.Magenta);
         }
 
         private static int GetDungeonSize() {
@@ -128,7 +128,7 @@ namespace Programming101CS.Practice.Solution {
                         isPlaying = false;
                         PrintTools.ClearConsole();
                         dungeon.PrintDungeon(player, enemies);
-                        PrintTools.WriteLine("El jugador ha sido eliminado...", ConsoleColor.Red);
+                        PrintTools.WriteLine("\nEl jugador ha sido eliminado...", ConsoleColor.Red);
                     }
 
                     foreach (var enemy in enemies) {
@@ -138,7 +138,7 @@ namespace Programming101CS.Practice.Solution {
                             isPlaying = false;
                             PrintTools.ClearConsole();
                             dungeon.PrintDungeon(player, enemies);
-                            PrintTools.WriteLine("El jugador ha sido eliminado...", ConsoleColor.Red);
+                            PrintTools.WriteLine("\nEl jugador ha sido eliminado...", ConsoleColor.Red);
                             break;
                         }
                     }
@@ -147,7 +147,7 @@ namespace Programming101CS.Practice.Solution {
                         isPlaying = false;
                         PrintTools.ClearConsole();
                         dungeon.PrintDungeon(player, enemies);
-                        PrintTools.WriteLine("¡El jugador ha encontrado el tesoro!", ConsoleColor.Yellow);
+                        PrintTools.WriteLine("\n¡El jugador ha encontrado el tesoro!", ConsoleColor.Yellow);
                     }
                 }
             }

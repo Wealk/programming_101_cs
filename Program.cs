@@ -1,37 +1,52 @@
 ﻿using Programming101CS.Helpers;
+using Programming101CS.Practice.Solution;
+using Programming101CS.Syllabus.Definitions;
 
 namespace Programming101CS {
     public class Program {
+        // Private variables
+        static SyllabusChapter[] chapters;
+
         public static void Main() {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
+            chapters = GetChapters();
             int input;
             do {
                 ShowMainMenu();
                 Console.Write("\n\n");
                 input = ReadUserInput();
 
-                if (input >= 1 && input <= 8) {
-                    PrintTools.ClearConsole();
+                PrintTools.ClearConsole();
+                if (input >= 1 && input <= 11) {
+                    var chapter = chapters[input - 1];
+                    PrintTools.WriteLine($"{chapter.ID}- {chapter.Title.ToUpperInvariant()}\n", ConsoleColor.Yellow);
+                    Console.WriteLine(chapter.Information);
+                    PrintTools.WriteLine(input != 11 ? "EJERCICIOS" : "PASOS RECOMENDADOS", ConsoleColor.Cyan);
+                    Console.WriteLine(chapter.Exercises);
 
-                    PrintTools.WriteLine($"{input}- {GetSectionTitle(input)}", ConsoleColor.Yellow);
-                    GetSectionSyllabus(input);
-                    Console.Write("\n\n");
-                    PrintTools.WriteLine(input != 8 ? "EJERCICIOS" : "PASOS RECOMENDADOS", ConsoleColor.Cyan);
-                    GetSectionExercicies(input);
-
-                    if (ReadSolutionInput()) {
-                        Console.WriteLine("\n\n");
-                        PrintTools.WriteLine("SOLUCIONES", ConsoleColor.Cyan);
-                        GetSectionSolutions(input);
-                        Console.Write("\n\nPULSA CUALQUIER TECLA PARA VOLVER AL MENÚ");
-                        _ = Console.ReadKey();
-                    }
-
-                    PrintTools.ClearConsole();
+                    if (input == 11 && ReadSolutionInput()) 
+                        DungeonSearcher.StartAdventure();
+                    
+                    WaitForUserInput();
                 }
-
             } while (input != 0);
+        }
+
+        private static SyllabusChapter[] GetChapters() {
+            return [
+                Syllabus.Chapters.Chapter02_01.GetChapter(),
+                Syllabus.Chapters.Chapter02_02.GetChapter(),
+                Syllabus.Chapters.Chapter02_03.GetChapter(),
+                Syllabus.Chapters.Chapter02_04.GetChapter(),
+                Syllabus.Chapters.Chapter03_01.GetChapter(),
+                Syllabus.Chapters.Chapter03_02.GetChapter(),
+                Syllabus.Chapters.Chapter03_03.GetChapter(),
+                Syllabus.Chapters.Chapter03_04.GetChapter(),
+                Syllabus.Chapters.Chapter04_01.GetChapter(),
+                Syllabus.Chapters.Chapter04_02.GetChapter(),
+                Syllabus.Chapters.Chapter05.GetChapter(),
+            ];
         }
 
         private static void ShowMainMenu() {
@@ -47,35 +62,25 @@ namespace Programming101CS {
             Console.Write("\nCanal de ");
             PrintTools.Write("Youtube", ConsoleColor.Red);
             Console.Write(": ");
-            PrintTools.WriteLine("https://www.youtube.com/@wealk_dev", ConsoleColor.Cyan);
-
-            Console.Write("Cuenta de ");
-            PrintTools.Write("X (Twitter)", ConsoleColor.DarkGreen);
-            Console.Write(": ");
-            PrintTools.WriteLine("https://x.com/wealk90 \n", ConsoleColor.Cyan);
+            PrintTools.WriteLine("https://www.youtube.com/@wealks_playground \n", ConsoleColor.Cyan);
 
             Console.WriteLine("¿Qué capítulo quieres revisar?");
-            Console.WriteLine("\t1- Tipos de datos primitivos");
-            Console.WriteLine("\t2- Operadores");
-            Console.WriteLine("\t3- Control del flujo de ejecución");
-            Console.WriteLine("\t4- Conjuntos");
-            Console.WriteLine("\t5- Métodos");
-            Console.WriteLine("\t6- Programación orientada a objetos");
-            Console.WriteLine("\t7- Conjuntos avanzados");
-            Console.WriteLine("\t8- Práctica final");
+            foreach (var chapter in chapters)
+                Console.WriteLine($"\t{chapter.ID}- {chapter.Title}");
             Console.WriteLine("\n\t0- Salir");
         }
 
         private static int ReadUserInput() {
-            Console.Write("Opción: ");
-            var keyPressed = Console.ReadKey();
-
             var option = 0;
-            while (keyPressed.Key != ConsoleKey.Escape && (!int.TryParse($"{keyPressed.KeyChar}", out option) || option < 0 || option > 8)) {
-                PrintTools.WriteLine(" \tNop, Intenta de nuevo :)", ConsoleColor.Red);
+            string userLine;
+            bool validOption;
+            do {
                 Console.Write("Opción: ");
-                keyPressed = Console.ReadKey();
-            }
+                userLine = Console.ReadLine();
+                validOption = userLine != string.Empty && int.TryParse(userLine, out option) && option >= 0 && option <= 11;
+                if (!validOption)
+                    PrintTools.WriteLine(" \tNop, Intenta de nuevo :)", ConsoleColor.Red);
+            } while (!validOption);
 
             return option;
         }
@@ -85,105 +90,10 @@ namespace Programming101CS {
             return Console.ReadKey().Key == ConsoleKey.Y;
         }
 
-        private static string GetSectionTitle(int input) {
-            return input switch {
-                1 => "TIPOS DE DATOS PRIMITIVOS",
-                2 => "OPERADORES",
-                3 => "CONTROL DEL FLUJO DE EJECUCIÓN",
-                4 => "CONJUNTOS",
-                5 => "MÉTODOS",
-                6 => "PROGRAMACIÓN ORIENTADA A OBJECTO (POO/OOP)",
-                7 => "CONJUNTOS AVANZADOS",
-                8 => "PRACTICA FINAL",
-                _ => string.Empty
-            };
-        }
-
-        private static void GetSectionSyllabus(int input) {
-            switch (input) {
-                case 1:
-                    Syllabus.Primitives.Information();
-                    break;
-                case 2:
-                    Syllabus.Operators.Information();
-                    break;
-                case 3:
-                    Syllabus.ControlFlow.Information();
-                    break;
-                case 4:
-                    Syllabus.Sets.Information();
-                    break;
-                case 5:
-                    Syllabus.Methods.Information();
-                    break;
-                case 6:
-                    Syllabus.ObjectOrientedProgramming.Information();
-                    break;
-                case 7:
-                    Syllabus.AdvancedSets.Information();
-                    break;
-                case 8:
-                    Practice.Statement.Information();
-                    break;
-            }
-        }
-
-        private static void GetSectionExercicies(int input) {
-            switch (input) {
-                case 1:
-                    Syllabus.Exercices.Primitives.Statement();
-                    break;
-                case 2:
-                    Syllabus.Exercices.Operators.Statement();
-                    break;
-                case 3:
-                    Syllabus.Exercices.ControlFlow.Statement();
-                    break;
-                case 4:
-                    Syllabus.Exercices.Sets.Statement();
-                    break;
-                case 5:
-                    Syllabus.Exercices.Methods.Statement();
-                    break;
-                case 6:
-                    Syllabus.Exercices.ObjectOrientedProgramming.Statement();
-                    break;
-                case 7:
-                    Syllabus.Exercices.AdvancedSets.Statement();
-                    break;
-                case 8:
-                    Practice.Statement.RecommendedSteps();
-                    break;
-            }
-        }
-
-        private static void GetSectionSolutions(int input) {
-            switch (input) {
-                case 1:
-                    Syllabus.Exercices.Solutions.Primitives.Solution();
-                    break;
-                case 2:
-                    Syllabus.Exercices.Solutions.Operators.Solution();
-                    break;
-                case 3:
-                    Syllabus.Exercices.Solutions.ControlFlow.Solution();
-                    break;
-                case 4:
-                    Syllabus.Exercices.Solutions.Sets.Solution();
-                    break;
-                case 5:
-                    Syllabus.Exercices.Solutions.Methods.Solution();
-                    break;
-                case 6:
-                    Syllabus.Exercices.Solutions.ObjectOrientedProgramming.Solution();
-                    break;
-                case 7:
-                    Syllabus.Exercices.Solutions.AdvancedSets.Solution();
-                    break;
-                case 8:
-                    Practice.Solution.DungeonSearcher.StartAdventure();
-                    break;
-            }
+        private static void WaitForUserInput() {
+            Console.Write("\n\nPulsa cualquier tecla para volver al menú principal...".ToUpperInvariant());
+            Console.ReadKey();
+            PrintTools.ClearConsole();
         }
     }
 }
