@@ -115,42 +115,57 @@ namespace Programming101CS.Practice.Solution {
                 PrintTools.ClearConsole();
                 dungeon.PrintDungeon(player, enemies);
 
+                // Player input
                 var availableDirections = dungeon.GetAvailableDirections(player);
                 var userDirection = GetUserInput(availableDirections);
                 if (!userDirection.HasValue) {
                     Console.WriteLine("Saliendo de la mazmorra...");
-                    isPlaying = false;
-                } else {
-                    player.Move(userDirection.Value);
-                    if (dungeon.StairsPosition.Any(s => s == player.Position)) player.ChangeFloor();
+                    break;
+                }
 
-                    if (enemies.Any(e => e.Position == player.Position)) {
+                // Entities movement
+                player.Move(userDirection.Value);
+
+                foreach (var enemy in enemies) {
+                    if (enemy.Position == player.Position) {
+                        GameOver(dungeon, player, enemies);
                         isPlaying = false;
-                        PrintTools.ClearConsole();
-                        dungeon.PrintDungeon(player, enemies);
-                        PrintTools.WriteLine("\nEl jugador ha sido eliminado...", ConsoleColor.Red);
+                        break;
                     }
 
-                    foreach (var enemy in enemies) {
-                        availableDirections = dungeon.GetAvailableDirections(enemy, enemies);
-                        enemy.Move(availableDirections);
-                        if (enemy.Position == player.Position) {
-                            isPlaying = false;
-                            PrintTools.ClearConsole();
-                            dungeon.PrintDungeon(player, enemies);
-                            PrintTools.WriteLine("\nEl jugador ha sido eliminado...", ConsoleColor.Red);
-                            break;
-                        }
-                    }
+                    availableDirections = dungeon.GetAvailableDirections(enemy, enemies);
+                    enemy.Move(availableDirections);
 
-                    if (isPlaying && player.Position == dungeon.TreasurePosition) {
+                    if (enemy.Position == player.Position) {
+                        GameOver(dungeon, player, enemies);
                         isPlaying = false;
-                        PrintTools.ClearConsole();
-                        dungeon.PrintDungeon(player, enemies);
-                        PrintTools.WriteLine("\n¡El jugador ha encontrado el tesoro!", ConsoleColor.Yellow);
+                        break;
+                    }
+                }
+
+                // Check game state
+                if (isPlaying) {
+                    if (dungeon.StairsPosition.Any(s => s == player.Position))
+                        player.ChangeFloor();
+
+                    if (player.Position == dungeon.TreasurePosition) {
+                        PlayerWin(dungeon, player, enemies);
+                        isPlaying = false;
                     }
                 }
             }
+        }
+
+        private static void GameOver(Dungeon dungeon, Adventurer player, Enemy[] enemies) {
+            PrintTools.ClearConsole();
+            dungeon.PrintDungeon(player, enemies);
+            PrintTools.WriteLine("\nEl jugador ha sido eliminado...", ConsoleColor.Red);
+        }
+
+        private static void PlayerWin(Dungeon dungeon, Adventurer player, Enemy[] enemies) {
+            PrintTools.ClearConsole();
+            dungeon.PrintDungeon(player, enemies);
+            PrintTools.WriteLine("\n¡El jugador ha encontrado el tesoro!", ConsoleColor.Yellow);
         }
     }
 }
