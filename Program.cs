@@ -25,9 +25,9 @@ namespace Programming101CS {
                     PrintTools.WriteLine(input != 11 ? "EJERCICIOS" : "PASOS RECOMENDADOS", ConsoleColor.Cyan);
                     Console.WriteLine(chapter.Exercises);
 
-                    if (input == 11 && ReadSolutionInput()) 
+                    if (input == 11 && ReadSolutionInput())
                         DungeonSearcher.StartAdventure();
-                    
+
                     WaitForUserInput();
                 }
             } while (input != 0);
@@ -35,17 +35,17 @@ namespace Programming101CS {
 
         private static SyllabusChapter[] GetChapters() {
             return [
-                Syllabus.Chapters.Chapter02_01.GetChapter(),
-                Syllabus.Chapters.Chapter02_02.GetChapter(),
-                Syllabus.Chapters.Chapter02_03.GetChapter(),
-                Syllabus.Chapters.Chapter02_04.GetChapter(),
                 Syllabus.Chapters.Chapter03_01.GetChapter(),
                 Syllabus.Chapters.Chapter03_02.GetChapter(),
                 Syllabus.Chapters.Chapter03_03.GetChapter(),
                 Syllabus.Chapters.Chapter03_04.GetChapter(),
                 Syllabus.Chapters.Chapter04_01.GetChapter(),
                 Syllabus.Chapters.Chapter04_02.GetChapter(),
-                Syllabus.Chapters.Chapter05.GetChapter(),
+                Syllabus.Chapters.Chapter04_03.GetChapter(),
+                Syllabus.Chapters.Chapter04_04.GetChapter(),
+                Syllabus.Chapters.Chapter05_01.GetChapter(),
+                Syllabus.Chapters.Chapter05_02.GetChapter(),
+                Syllabus.Chapters.Chapter06.GetChapter(),
             ];
         }
 

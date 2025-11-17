@@ -2,7 +2,7 @@
 using System.Text;
 
 namespace Programming101CS.Syllabus.Chapters {
-    internal static class Chapter05 {
+    internal static class Chapter06 {
         public static SyllabusChapter GetChapter() {
             return new SyllabusChapter(11, "Práctica final: Dungeon searcher", GetInformation(), GetExercices());
         }
