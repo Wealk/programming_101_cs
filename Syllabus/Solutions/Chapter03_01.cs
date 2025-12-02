@@ -1,4 +1,4 @@
-﻿namespace Programming101CS.Exercicies.Chapters {
+﻿namespace Programming101CS.Syllabus.Solutions {
     internal class Chapter03_01 {
         public void Main() {
             // a) Declara una variable bool llamada \"exerciceA\" inicializada a true:

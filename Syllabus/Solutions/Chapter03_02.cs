@@ -1,4 +1,4 @@
-﻿namespace Programming101CS.Exercicies.Chapters {
+﻿namespace Programming101CS.Syllabus.Solutions {
     internal class Chapter03_02 {
         public void Main() {
             // a) Declara dos variables int con el nombre \"x\" = 5 y \"y\" = 3 y una tercera \"z\" que sea la suma de \"x\" e \"y\":

@@ -1,4 +1,6 @@
-﻿namespace Programming101CS.Exercicies.Chapters {
+﻿using Microsoft.VisualBasic;
+
+namespace Programming101CS.Syllabus.Solutions {
     internal class Chapter03_03 {
         public void Main() {
             // a) Declara dos variables int \"a\" = 5, \"b\" = 11 y si \"a\" + \"b\" es mayor a 16 suma \"a\" a \"b\":
@@ -51,8 +53,8 @@
                 Console.Write($"{character} ");
             }
 
-            // h) Declara una lista de int \"iteration\", como en la teoria, y utilizando un bucle \"for\" asigna el valor 0 a \"a\" y mientras \"a\" sea menor a \"b\" incrementa \"a\" en 2, añadiendo el valor de \"a\" en cada iteración a la lista con la instrucción \"iteration.Add(a)\":
-            var iteration = new List<int>();
+            // h) Declara una lista de int \"iteration\" con la instrucción \"List<int> iteration = new List<int>()\", y utilizando un bucle \"for\" asigna el valor 0 a \"a\" y mientras \"a\" sea menor a \"b\" incrementa \"a\" en 2, añadiendo el valor de \"a\" en cada iteración a la lista con la instrucción \"iteration.Add(a)\":
+            List<int> iteration = new List<int>();
             for (a = 0; a < b; a += 2) {
                 iteration.Add(a);
             }

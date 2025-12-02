@@ -134,12 +134,12 @@ namespace Programming101CS.Syllabus.Chapters {
             message.AppendLine("- Utilizado principalmente para recorrer los elementos de cualquier objeto con un iterador definido");
             message.AppendLine("- Este bucle utiliza el iterador del objeto para recorrer el conjunto utilizado");
 
-            var list = new List<int> { 1, 5, 5 };
+            List<int> list = new List<int> { 1, 5, 5 };
             foreach (var item in list) {
                 // Bloque
             }
 
-            var hashset = new HashSet<char> { 'h', 'O', 'L', 'a' };
+            HashSet<char> hashset = new HashSet<char> { 'h', 'O', 'L', 'a' };
             foreach (var item in hashset) {
                 // Bloque
             }
@@ -180,7 +180,7 @@ namespace Programming101CS.Syllabus.Chapters {
             message.AppendLine("\ne) Declara una variable float \"index\" y crea un bucle \"while\" que incremente \"index\" en 0.1f hasta que \"index\" sea mayor a 100 y lo muestre por consola con la instrucción \"Console.Write($\"{index}, \");\" tras el incremento:");
             message.AppendLine("\nf) Utilizando la variable anterior crea un bucle \"do-while\" que reste 0.25f a \"index\" hasta ser menor o igual a 0 y muestralo por consola después del decremento:");
             message.AppendLine("\ng) Crea un bucle \"for\" que instancie una variable char \"character\" inicializada a char.MinValue y que mientras sea menor a 255 incrementa \"character\" en 1. En cada iteración debe mostrar por la consola el valor de \"character\":");
-            message.AppendLine("\nh) Declara una lista de int \"iteration\", como en la teoria, y utilizando un bucle \"for\" asigna el valor 0 a \"a\" y mientras \"a\" sea menor a \"b\" incrementa \"a\" en 2, añadiendo el valor de \"a\" en cada iteración a la lista con la instrucción \"iteration.Add(a)\":");
+            message.AppendLine("\nh) Declara una lista de int \"iteration\" con la instrucción \"List<int> iteration = new List<int>()\", y utilizando un bucle \"for\" asigna el valor 0 a \"a\" y mientras \"a\" sea menor a \"b\" incrementa \"a\" en 2, añadiendo el valor de \"a\" en cada iteración a la lista con la instrucción \"iteration.Add(a)\":");
             message.AppendLine("\ni) Recorre la lista \"iteration\" anterior con un \"foreach\" con una variable \"item\" de tipo int, si \"item\" es 0 ignora esa iteración, si \"item\" es mayor o igual a 5 rompe el bucle. Si pasa las condiciones anteriores, muestra el valor \"item\" en la consola:");
 
             return message.ToString();
